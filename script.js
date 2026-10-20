@@ -4,9 +4,8 @@
  * ============================================================================
  */
 const CONFIG = {
-  // 1. Nhạc nền (Để đường dẫn file nhạc của bạn, ví dụ: "./nhac.mp3")
-  // Nếu để trống "" hoặc file chưa có, web sẽ tự động phát giai điệu Music Box.
-  musicUrl: "Nhạc.m4a",
+  // 1. Nhạc nền (Đã hỗ trợ tự động đọc cả "Nhạc.m4a" có dấu trên Mac lẫn "nhac.m4a")
+  musicUrl: "./Nhạc.m4a",
 
   // 2. Nội dung Chặng 1 (Mở Hộp Quà)
   introPrefix: "Món quà 20/10 đặc biệt dành riêng cho",
@@ -24,7 +23,7 @@ const CONFIG = {
   letterGreeting: "Gửi cô chủ Sóp hoa,",
   letterContent: `Nhân ngày 20/10, chúc bạn những điều tốt đẹp và dịu dàng nhất. Chúc bạn luôn xinh như hoa, 
   
-  vượt mọi thử thách, sớm đạt được những mục tiêu của bản thân và gặp thật nhiều may mắn.`,
+vượt mọi thử thách, sớm đạt được những mục tiêu của bản thân và gặp thật nhiều may mắn.`,
   typewriterSpeed: 32, // Tốc độ gõ chữ (ms) - số càng nhỏ gõ càng nhanh
   senderLabel: "Người gửi",
   senderName: "Minh Tiền",
@@ -35,7 +34,7 @@ const CONFIG = {
   albumTip: "✨ Mẹo nhỏ: Chạm vào từng bức ảnh để lật xem lời nhắn phía sau nha",
   toStage4ButtonText: "Khám Phá thẻ cào đặc biệt",
 
-  // Danh sách ảnh Polaroid (Bạn có thể đổi đường dẫn sang "./images/anh1.jpg",...)
+  // Danh sách ảnh Polaroid
   photos: [
     {
       url: "./images/IMG_1271.jpg",
@@ -74,16 +73,16 @@ const CONFIG = {
 
 /**
  * ============================================================================
- * LOGIC XỬ LÝ TƯƠNG TÁC (KHÔNG CẦN CHỈNH SỬA PHẦN DƯỚI NÀY)
+ * LOGIC XỬ LÝ TƯƠNG TÁC
  * ============================================================================
  */
 let tapCount = 0;
 let isGiftOpened = false;
 let typewriterTimer = null;
 let isMusicPlaying = false;
-let fallbackInterval = null;
-let audioCtx = null;
 let scratchCompleted = false;
+let candidateMusicUrls = [];
+let currentMusicUrlIndex = 0;
 
 document.addEventListener("DOMContentLoaded", () => {
   applyConfigToDOM();
@@ -91,6 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initStage1Events();
   initStage2Events();
   initStage3Polaroids();
+  initBackButtons();
   initMusicControls();
 });
 
@@ -132,11 +132,32 @@ function goToStage(stageNumber) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  // Khởi tạo thẻ cào đúng kích thước ngay khi Chặng 4 hiển thị
-  if (stageNumber === 4) {
+  // Khởi tạo thẻ cào đúng kích thước ngay khi Chặng 4 hiển thị (chỉ vẽ lại nếu chưa cào xong)
+  if (stageNumber === 4 && !scratchCompleted) {
     requestAnimationFrame(() => {
       initScratchCard();
     });
+  }
+}
+
+// Sự kiện cho tất cả các nút Quay lại
+function initBackButtons() {
+  const backFromEnvelopeBtn = document.getElementById("backFromEnvelopeBtn");
+  const backToStage1Btn = document.getElementById("backToStage1Btn");
+  const backToStage2Btn = document.getElementById("backToStage2Btn");
+  const backToStage3Btn = document.getElementById("backToStage3Btn");
+
+  if (backFromEnvelopeBtn) {
+    backFromEnvelopeBtn.addEventListener("click", () => goToStage(1));
+  }
+  if (backToStage1Btn) {
+    backToStage1Btn.addEventListener("click", () => goToStage(1));
+  }
+  if (backToStage2Btn) {
+    backToStage2Btn.addEventListener("click", () => goToStage(2));
+  }
+  if (backToStage3Btn) {
+    backToStage3Btn.addEventListener("click", () => goToStage(3));
   }
 }
 
@@ -162,7 +183,7 @@ function initStage1Events() {
     if (dot) dot.classList.add("filled");
 
     giftBox.classList.remove("shake");
-    void giftBox.offsetWidth; // trigger reflow
+    void giftBox.offsetWidth;
     giftBox.classList.add("shake");
 
     if (tapCount < 3) {
@@ -228,7 +249,7 @@ function initStage3Polaroids() {
   CONFIG.photos.forEach((photo, idx) => {
     const card = document.createElement("div");
     card.className = "polaroid-card";
-    const tilt = idx % 2 === 0 ? "-1.5deg" : "1.5deg";
+    const tilt = idx % 2 === 0 ? "-1.2deg" : "1.2deg";
     card.style.transform = `rotate(${tilt})`;
 
     card.innerHTML = `
@@ -278,7 +299,7 @@ function initScratchCard() {
   const ctx = canvas.getContext("2d");
   ctx.scale(dpr, dpr);
 
-  // Vẽ lớp phủ nhũ vàng hồng
+  // Vẽ lớp phủ nhũ vàng ánh kim
   const grad = ctx.createLinearGradient(0, 0, rect.width, rect.height);
   grad.addColorStop(0, "#e6c259");
   grad.addColorStop(0.5, "#f7e39c");
@@ -364,14 +385,48 @@ function checkScratchPercent(ctx, canvas, statusText) {
   }
 }
 
-// ================= NHẠC NỀN (MP3 HOẶC MUSIC BOX DỰ PHÒNG) =================
+// ================= XỬ LÝ NHẠC NỀN (TỰ ĐỘNG NHẬN CẢ TÊN FILE CÓ DẤU TRÊN MAC) =================
+function buildCandidateMusicUrls(rawUrl) {
+  if (!rawUrl) return [];
+  const trimmed = rawUrl.trim();
+  const base = trimmed.startsWith("./") || trimmed.startsWith("http") || trimmed.startsWith("/")
+    ? trimmed
+    : `./${trimmed}`;
+
+  // Tạo danh sách các biến thể Unicode (NFD cho macOS Finder, NFC cho Windows/Web) + tên không dấu
+  const list = [
+    base.normalize("NFD"),
+    base.normalize("NFC"),
+    encodeURI(base.normalize("NFD")),
+    encodeURI(base.normalize("NFC")),
+    "./nhac.m4a",
+    "./Nhac.m4a",
+    "./nhac.mp3"
+  ];
+  return [...new Set(list)];
+}
+
 function initMusicControls() {
   const musicBtn = document.getElementById("musicBtn");
   const bgAudio = document.getElementById("bgAudio");
 
-  if (CONFIG.musicUrl) {
-    bgAudio.src = CONFIG.musicUrl;
+  candidateMusicUrls = buildCandidateMusicUrls(CONFIG.musicUrl);
+  currentMusicUrlIndex = 0;
+
+  if (candidateMusicUrls.length > 0) {
+    bgAudio.src = candidateMusicUrls[0];
   }
+
+  // Nếu đường dẫn đầu tiên bị lỗi (do khác bảng mã NFD/NFC trên Mac), tự thử đường dẫn tiếp theo
+  bgAudio.addEventListener("error", () => {
+    if (currentMusicUrlIndex + 1 < candidateMusicUrls.length) {
+      currentMusicUrlIndex++;
+      bgAudio.src = candidateMusicUrls[currentMusicUrlIndex];
+      if (isMusicPlaying) {
+        bgAudio.play().catch(() => {});
+      }
+    }
+  });
 
   musicBtn.addEventListener("click", () => {
     if (isMusicPlaying) {
@@ -391,14 +446,14 @@ function startMusic() {
   musicIcon.textContent = "🎵";
   musicText.textContent = "Đang phát nhạc";
 
-  if (CONFIG.musicUrl) {
-    bgAudio.play().catch(() => {
-      // Nếu chưa có file nhac.mp3, tự động chuyển sang giai điệu Music Box
-      playFallbackMusicBox();
-    });
-  } else {
-    playFallbackMusicBox();
-  }
+  bgAudio.play().catch((err) => {
+    console.warn("Đang thử biến thể đường dẫn nhạc tiếp theo...", err);
+    if (currentMusicUrlIndex + 1 < candidateMusicUrls.length) {
+      currentMusicUrlIndex++;
+      bgAudio.src = candidateMusicUrls[currentMusicUrlIndex];
+      bgAudio.play().catch(() => {});
+    }
+  });
 }
 
 function stopMusic() {
@@ -411,38 +466,6 @@ function stopMusic() {
   musicText.textContent = "Bật nhạc";
 
   bgAudio.pause();
-  if (fallbackInterval) {
-    clearInterval(fallbackInterval);
-    fallbackInterval = null;
-  }
-}
-
-function playFallbackMusicBox() {
-  if (fallbackInterval) return;
-  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-  if (!AudioContextClass) return;
-
-  if (!audioCtx) audioCtx = new AudioContextClass();
-  const notes = [523.25, 659.25, 783.99, 1046.5, 783.99, 659.25, 587.33, 698.46, 880.0, 698.46];
-  let step = 0;
-
-  fallbackInterval = setInterval(() => {
-    if (!isMusicPlaying) return;
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.type = "sine";
-    osc.frequency.value = notes[step % notes.length];
-
-    gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.08, audioCtx.currentTime + 0.04);
-    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1.1);
-
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    osc.start();
-    osc.stop(audioCtx.currentTime + 1.15);
-    step++;
-  }, 550);
 }
 
 // ================= HIỆU ỨNG CÁNH HOA RƠI & PHÁO GIẤY =================
