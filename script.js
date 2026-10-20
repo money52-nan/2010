@@ -6,7 +6,7 @@
 const CONFIG = {
   // 1. Nhạc nền (Để đường dẫn file nhạc của bạn, ví dụ: "./nhac.mp3")
   // Nếu để trống "" hoặc file chưa có, web sẽ tự động phát giai điệu Music Box.
-  musicUrl: "./nhac.mp3",
+  musicUrl: "Nhạc.m4a",
 
   // 2. Nội dung Chặng 1 (Mở Hộp Quà)
   introPrefix: "Món quà 20/10 đặc biệt dành riêng cho",
