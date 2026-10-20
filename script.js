@@ -112,7 +112,7 @@ function applyConfigToDOM() {
 
   document.getElementById("albumTitleText").textContent = CONFIG.albumTitle;
   document.getElementById("albumTipText").textContent = CONFIG.albumTip;
-  document.getElementById("toStage4BtnText").textContent = CONFIG.toStage4ButtonText;
+  // document.getElementById("toStage4BtnText").textContent = CONFIG.toStage4ButtonText;
 
   document.getElementById("scratchSectionTitle").textContent = CONFIG.scratchSectionTitle;
   document.getElementById("scratchSectionSub").textContent = CONFIG.scratchSectionSub;
@@ -273,9 +273,9 @@ function initStage3Polaroids() {
     grid.appendChild(card);
   });
 
-  toStage4Btn.addEventListener("click", () => {
-    goToStage(4);
-  });
+  // toStage4Btn.addEventListener("click", () => {
+  //   goToStage(4);
+  // });
 }
 
 // ================= CHẶNG 4: THẺ CÀO ÁNH KIM =================
