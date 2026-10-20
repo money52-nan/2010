@@ -1,1 +1,774 @@
+:root {
+  --bg-grad-1: #fff0f5;
+  --bg-grad-2: #ffe4ee;
+  --bg-grad-3: #ffd6e7;
+  --primary: #d81b60;
+  --primary-dark: #ad1457;
+  --primary-light: #f06292;
+  --gold: #d4af37;
+  --text-main: #4a152b;
+  --text-muted: #7b3f58;
+  --card-bg: rgba(255, 255, 255, 0.82);
+  --card-border: rgba(255, 255, 255, 0.9);
+  --shadow-soft: 0 20px 50px rgba(173, 20, 87, 0.14);
+}
 
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  min-height: 100vh;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  color: var(--text-main);
+  background: radial-gradient(circle at top, var(--bg-grad-1), var(--bg-grad-2) 55%, var(--bg-grad-3) 100%);
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Canvas nền */
+#petalCanvas,
+#confettiCanvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+#petalCanvas {
+  z-index: 1;
+}
+
+#confettiCanvas {
+  z-index: 50;
+}
+
+/* Nút nhạc */
+.music-btn {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(216, 27, 96, 0.25);
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(10px);
+  color: var(--primary-dark);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(216, 27, 96, 0.12);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.music-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Khung chính */
+.app-container {
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 16px 40px;
+}
+
+.stage {
+  display: none;
+  width: 100%;
+  max-width: 680px;
+  animation: fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.stage.active {
+  display: block;
+}
+
+.stage-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--card-border);
+  border-radius: 28px;
+  padding: 36px 28px;
+  text-align: center;
+  box-shadow: var(--shadow-soft);
+}
+
+.wide-card {
+  max-width: 920px;
+  margin: 0 auto;
+}
+
+#stage-3.stage {
+  max-width: 920px;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Huy hiệu người nhận ở Chặng 1 - Cùng font và màu chữ */
+.recipient-badge {
+  display: inline-block;
+  padding: 8px 20px;
+  border-radius: 999px;
+  background: rgba(216, 27, 96, 0.1);
+  border: 1px solid rgba(216, 27, 96, 0.22);
+  color: var(--primary-dark);
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 18px;
+}
+
+.recipient-badge span {
+  font-family: inherit;
+  color: inherit;
+  font-weight: inherit;
+}
+
+.main-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 5vw, 2.85rem);
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.85rem, 4.5vw, 2.5rem);
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 10px;
+}
+
+.sub-text {
+  color: var(--text-muted);
+  font-size: 0.98rem;
+  line-height: 1.6;
+  max-width: 480px;
+  margin: 0 auto 24px;
+}
+
+/* ================= HỘP QUÀ 3D ================= */
+.gift-scene {
+  height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 12px 0 18px;
+  user-select: none;
+}
+
+.gift-box-wrapper {
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.gift-box-wrapper:hover {
+  transform: scale(1.04);
+}
+
+.gift-glow {
+  position: absolute;
+  inset: -25px;
+  background: radial-gradient(circle, rgba(240, 98, 146, 0.45) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(12px);
+  z-index: 0;
+  animation: pulseGlow 2.4s infinite ease-in-out;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { transform: scale(0.95); opacity: 0.7; }
+  50% { transform: scale(1.1); opacity: 1; }
+}
+
+.gift-box {
+  position: relative;
+  width: 150px;
+  height: 135px;
+  z-index: 2;
+  animation: floatBox 3s ease-in-out infinite;
+}
+
+@keyframes floatBox {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.gift-box.shake {
+  animation: shakeBox 0.45s ease;
+}
+
+@keyframes shakeBox {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(-8deg) scale(1.06); }
+  50% { transform: rotate(8deg) scale(1.08); }
+  75% { transform: rotate(-5deg) scale(1.04); }
+}
+
+.gift-lid {
+  position: absolute;
+  top: 0;
+  left: -8px;
+  width: 166px;
+  height: 38px;
+  background: linear-gradient(135deg, #ec407a, #c2185b);
+  border-radius: 10px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  z-index: 3;
+  transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.6s ease;
+}
+
+.lid-ribbon {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 100%;
+  background: linear-gradient(to right, #f9d976, #e3b448, #f9d976);
+}
+
+.gift-bow {
+  position: absolute;
+  top: -26px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 74px;
+  height: 32px;
+}
+
+.bow-left,
+.bow-right {
+  position: absolute;
+  width: 36px;
+  height: 28px;
+  border: 6px solid #e3b448;
+  border-radius: 50% 50% 0 50%;
+  background: rgba(249, 217, 118, 0.25);
+}
+
+.bow-left {
+  left: 0;
+  transform: rotate(-20deg);
+}
+
+.bow-right {
+  right: 0;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(20deg);
+}
+
+.bow-center {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 18px;
+  height: 18px;
+  background: #d4af37;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.gift-body {
+  position: absolute;
+  bottom: 0;
+  width: 150px;
+  height: 105px;
+  background: linear-gradient(145deg, #d81b60, #880e4f);
+  border-radius: 0 0 14px 14px;
+  box-shadow: 0 14px 30px rgba(136, 14, 79, 0.35);
+  overflow: hidden;
+}
+
+.body-ribbon {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 100%;
+  background: linear-gradient(to right, #f9d976, #e3b448, #f9d976);
+}
+
+.gift-tag {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  background: #fff9fa;
+  color: var(--primary-dark);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+}
+
+/* Khi hộp quà mở */
+.gift-box.opened .gift-lid {
+  transform: translateY(-75px) rotate(-18deg) scale(0.95);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Chấm tiến độ chạm */
+.tap-progress-wrap {
+  margin-top: 6px;
+}
+
+.tap-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.tap-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(216, 27, 96, 0.2);
+  transition: all 0.3s ease;
+}
+
+.tap-dot.filled {
+  background: var(--primary);
+  transform: scale(1.25);
+  box-shadow: 0 0 10px rgba(216, 27, 96, 0.5);
+}
+
+.tap-hint {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.gift-opened-content {
+  margin-top: 16px;
+  animation: fadeUp 0.5s ease forwards;
+}
+
+.opened-message {
+  font-size: 1rem;
+  color: var(--primary-dark);
+  font-weight: 500;
+  margin-bottom: 18px;
+}
+
+/* Nút bấm chính */
+.primary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 28px;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, #e91e63, #ad1457);
+  color: #fff;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(216, 27, 96, 0.32);
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.primary-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(216, 27, 96, 0.42);
+}
+
+.primary-btn:active {
+  transform: translateY(0);
+}
+
+/* ================= CHẶNG 2: PHONG BÌ & TÂM THƯ ================= */
+.envelope-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 28px 0 12px;
+  cursor: pointer;
+}
+
+.envelope {
+  position: relative;
+  width: 290px;
+  height: 190px;
+  background: #f8bbd0;
+  border-radius: 12px;
+  box-shadow: 0 16px 35px rgba(173, 20, 87, 0.22);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.envelope:hover {
+  transform: translateY(-6px);
+}
+
+.envelope-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 145px solid transparent;
+  border-right: 145px solid transparent;
+  border-top: 105px solid #f06292;
+  z-index: 3;
+}
+
+.envelope-pocket {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 145px solid #f48fb1;
+  border-right: 145px solid #f48fb1;
+  border-bottom: 110px solid #ec407a;
+  z-index: 2;
+}
+
+.envelope-letter-preview {
+  position: absolute;
+  top: 22px;
+  left: 18px;
+  right: 18px;
+  height: 120px;
+  background: #fffdf9;
+  border-radius: 8px;
+  padding: 18px;
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.2rem;
+  color: var(--primary-dark);
+  z-index: 1;
+}
+
+.wax-seal {
+  position: absolute;
+  top: 52%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #e53935, #8e0000);
+  border: 2px solid #f9d976;
+  color: #ffe082;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+  z-index: 4;
+  animation: pulseSeal 2s infinite;
+}
+
+@keyframes pulseSeal {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.08); }
+}
+
+/* Giấy viết thư */
+.letter-paper {
+  background: linear-gradient(to bottom, #fffdfa, #fff7f9);
+  border: 1px solid rgba(216, 27, 96, 0.18);
+  border-radius: 20px;
+  padding: 32px 26px;
+  text-align: left;
+  box-shadow: inset 0 0 25px rgba(244, 143, 177, 0.12), 0 12px 30px rgba(173, 20, 87, 0.08);
+  margin-bottom: 24px;
+}
+
+.letter-header {
+  border-bottom: 1px dashed rgba(216, 27, 96, 0.25);
+  padding-bottom: 14px;
+  margin-bottom: 18px;
+}
+
+.letter-date {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.letter-greeting {
+  font-family: 'Dancing Script', cursive;
+  font-size: 2rem;
+  color: var(--primary-dark);
+}
+
+.letter-body {
+  min-height: 150px;
+  font-size: 1.04rem;
+  line-height: 1.85;
+  color: #3d1224;
+  white-space: pre-line;
+}
+
+.typewriter-text {
+  display: inline;
+}
+
+.typewriter-cursor {
+  display: inline-block;
+  color: var(--primary);
+  font-weight: 700;
+  animation: blinkCursor 0.8s infinite;
+}
+
+@keyframes blinkCursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.letter-footer {
+  margin-top: 24px;
+  text-align: right;
+  border-top: 1px dashed rgba(216, 27, 96, 0.25);
+  padding-top: 16px;
+}
+
+.sender-label {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.sender-name {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+}
+
+/* ================= CHẶNG 3: LƯỚI ẢNH POLAROID LẬT 3D ================= */
+.tip-pill {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(216, 27, 96, 0.2);
+  color: var(--primary-dark);
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 26px;
+}
+
+.polaroid-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+  margin-bottom: 30px;
+}
+
+.polaroid-card {
+  perspective: 1000px;
+  height: 320px;
+  cursor: pointer;
+}
+
+.polaroid-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+}
+
+.polaroid-card.flipped .polaroid-inner {
+  transform: rotateY(180deg);
+}
+
+.polaroid-front,
+.polaroid-back {
+  position: absolute;
+  inset: 0;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 14px 14px 20px;
+  box-shadow: 0 12px 28px rgba(74, 21, 43, 0.12);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.polaroid-photo-wrap {
+  width: 100%;
+  height: 215px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fce4ec;
+  margin-bottom: 12px;
+}
+
+.polaroid-photo-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.polaroid-caption {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.35rem;
+  color: var(--text-main);
+  margin-top: auto;
+}
+
+.polaroid-date {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.polaroid-back {
+  transform: rotateY(180deg);
+  background: linear-gradient(145deg, #fff5f8, #ffe4ee);
+  border: 2px dashed rgba(216, 27, 96, 0.35);
+  align-items: center;
+  justify-content: center;
+  padding: 22px;
+  text-align: center;
+}
+
+.polaroid-back-title {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--primary);
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.polaroid-secret-note {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.4rem;
+  line-height: 1.45;
+  color: var(--text-main);
+}
+
+/* ================= CHẶNG 4: THẺ CÀO ÁNH KIM ================= */
+.scratch-card-container {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0 18px;
+}
+
+.scratch-card-box {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  height: 220px;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 16px 36px rgba(173, 20, 87, 0.2);
+  border: 3px solid #f9d976;
+  background: linear-gradient(135deg, #fff9fb, #ffeef4);
+  user-select: none;
+}
+
+.scratch-prize-content {
+  position: absolute;
+  inset: 0;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.voucher-badge {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #d4af37, #b5891c);
+  color: #fff;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+.voucher-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 8px;
+}
+
+.voucher-desc {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+#scratchCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  touch-action: none;
+  transition: opacity 0.6s ease;
+}
+
+.scratch-status {
+  font-size: 0.92rem;
+  color: var(--primary-dark);
+  font-weight: 500;
+}
+
+.stage-actions {
+  margin-top: 10px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+@media (max-width: 600px) {
+  .stage-card {
+    padding: 28px 18px;
+  }
+  .letter-paper {
+    padding: 24px 18px;
+  }
+  .polaroid-grid {
+    grid-template-columns: 1fr;
+    max-width: 280px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
