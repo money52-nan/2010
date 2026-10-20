@@ -5,7 +5,7 @@
  */
 const CONFIG = {
   // 1. Nhạc nền (Đã hỗ trợ tự động đọc cả "Nhạc.m4a" có dấu trên Mac lẫn "nhac.m4a")
-  musicUrl: "./Nhạc.m4a",
+  musicUrl: "./Nhac2.m4a",
 
   // 2. Nội dung Chặng 1 (Mở Hộp Quà)
   introPrefix: "Món quà 20/10 đặc biệt dành riêng cho",
