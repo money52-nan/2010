@@ -19,59 +19,57 @@ const CONFIG = {
   // 3. Nội dung Chặng 2 (Bức Tâm Thư)
   envelopeHeaderTitle: "Một Bức Thư Dành Riêng Cho Bạn",
   envelopeHeaderSub: "Chạm vào con dấu sáp để mở phong bì nhé",
-  envelopePreviewText: "Gửi người con gái đặc biệt...",
+  envelopePreviewText: "Gửi Ngọc Hằng...",
   letterDate: "Ngày 20 tháng 10",
-  letterGreeting: "Gửi Ngọc Hằng,",
-  letterContent: `Nhân ngày Phụ nữ Việt Nam 20/10, chúc cô gái của anh luôn rạng rỡ như những đóa hoa ban mai, luôn giữ được nụ cười tươi tắn và bình yên trong tâm hồn.
-
-Cảm ơn em vì đã xuất hiện, mang đến thật nhiều niềm vui, sự dịu dàng và làm cho những ngày bình thường trở nên thật đặc biệt.
-
-Chúc em không chỉ riêng ngày 20/10 mà 365 ngày trong năm đều luôn được yêu thương, nâng niu và hạnh phúc trọn vẹn nhé!`,
+  letterGreeting: "Gửi cô chủ Sóp hoa,",
+  letterContent: `Nhân ngày 20/10, chúc bạn những điều tốt đẹp và dịu dàng nhất. Chúc bạn luôn xinh như hoa, 
+  
+  vượt mọi thử thách, sớm đạt được những mục tiêu của bản thân và gặp thật nhiều may mắn.`,
   typewriterSpeed: 32, // Tốc độ gõ chữ (ms) - số càng nhỏ gõ càng nhanh
-  senderLabel: "Người gửi trao yêu thương",
+  senderLabel: "Người gửi",
   senderName: "Minh Tiền",
-  toStage3ButtonText: "Mở Album Kỷ Niệm Polaroid",
+  toStage3ButtonText: "Mở những đoá hoa",
 
   // 4. Nội dung Chặng 3 (Album Kỷ Niệm Polaroid)
-  albumTitle: "Album Kỷ Niệm Của Chúng Mình",
-  albumTip: "✨ Mẹo nhỏ: Chạm vào từng bức ảnh để lật xem lời nhắn bí mật phía sau nhé!",
-  toStage4ButtonText: "Khám Phá Quà Tặng Bí Mật",
+  albumTitle: "Những Bông Hoa",
+  albumTip: "✨ Mẹo nhỏ: Chạm vào từng bức ảnh để lật xem lời nhắn phía sau nha",
+  toStage4ButtonText: "Khám Phá thẻ cào đặc biệt",
 
   // Danh sách ảnh Polaroid (Bạn có thể đổi đường dẫn sang "./images/anh1.jpg",...)
   photos: [
     {
-      url: "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=800&q=80",
-      caption: "Khoảnh khắc dịu dàng",
-      date: "Kỷ niệm #1",
-      secretNote: "Nụ cười của em luôn là điều làm anh xao xuyến nhất mỗi khi nhớ về."
+      url: "./images/IMG_1271.jpg",
+      caption: "Xinh đẹp",
+      date: "20/10",
+      secretNote: "Bạn xứng đáng với những điều tuyệt vời nhất."
     },
     {
-      url: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=800&q=80",
-      caption: "Ngày nắng đẹp",
-      date: "Kỷ niệm #2",
-      secretNote: "Đi đâu cũng được, miễn là chúng mình cùng đi với nhau."
+      url: "./images/IMG_1273.jpg",
+      caption: "Rạng rỡ",
+      date: "20/10",
+      secretNote: "Mong hôm nay có nhiều người làm bạn cười và mình may mắn nằm trong số đó."
     },
     {
-      url: "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=800&q=80",
-      caption: "Nụ cười tỏa nắng",
-      date: "Kỷ niệm #3",
-      secretNote: "Mong em mãi giữ được nét hồn nhiên, đáng yêu như bức hình này nhé!"
+      url: "./images/IMG_1274.jpg",
+      caption: "Ngọt ngào",
+      date: "20/10",
+      secretNote: "Đây là món quà mình tự làm, hy vọng bạn sẽ thích."
     },
     {
-      url: "https://images.unsplash.com/photo-1494774157365-9e04c6720e47?auto=format&fit=crop&w=800&q=80",
-      caption: "Hạnh phúc bình yên",
-      date: "Kỷ niệm #4",
-      secretNote: "Chúc mừng ngày 20/10! Cảm ơn em vì đã luôn ở bên cạnh anh."
+      url: "./images/IMG_1276.jpg",
+      caption: "Dễ thương",
+      date: "20/10",
+      secretNote: "Và ánh mắt của bạn đã làm trái tim của một ai đó đập sai nhịp."
     }
   ],
 
   // 5. Nội dung Chặng 4 (Thẻ Cào Ánh Kim)
-  scratchSectionTitle: "Món Quà Bí Mật Cuối Cùng",
+  scratchSectionTitle: "Món Quà đặc biệt",
   scratchSectionSub: "Dùng ngón tay hoặc chuột cào lớp nhũ ánh kim bên dưới để nhận quà nhé!",
   scratchCoverText: "CÀO NHẸ ĐỂ NHẬN QUÀ 20/10 ✨",
   voucherBadge: "VOUCHER ĐẶC QUYỀN 20/10",
-  voucherTitle: "Một buổi hẹn hò & ăn tối lãng mạn",
-  voucherDesc: "Chụp màn hình thẻ này và gửi cho anh để sử dụng bất cứ lúc nào nhé!"
+  voucherTitle: "Một ly trà sữa full topping",
+  voucherDesc: ""
 };
 
 /**
