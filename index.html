@@ -74,10 +74,12 @@
         <!-- Nội dung hiện ra sau khi mở hộp quà -->
         <div id="giftOpenedContent" class="gift-opened-content hidden">
           <p id="openedMessage" class="opened-message">✨ Hộp quà yêu thương đã mở! Một bức tâm thư đang chờ bạn khám phá...</p>
-          <button id="toStage2Btn" class="primary-btn">
-            <span id="toStage2BtnText">Mở Phong Bì Tâm Thư</span>
-            <span>💌</span>
-          </button>
+          <div class="stage-actions">
+            <button id="toStage2Btn" class="primary-btn">
+              <span id="toStage2BtnText">Mở Phong Bì Tâm Thư</span>
+              <span>💌</span>
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -95,12 +97,16 @@
               <div class="envelope-flap"></div>
               <div class="envelope-pocket"></div>
               <div class="envelope-letter-preview">
-                <p id="envelopePreviewText">Gửi người con gái đặc biệt...</p>
+                <p id="envelopePreviewText">Gửi Ngọc Hằng...</p>
               </div>
               <div class="wax-seal">
                 <span>20/10</span>
               </div>
             </div>
+          </div>
+
+          <div class="stage-actions">
+            <button id="backFromEnvelopeBtn" class="secondary-btn">← Quay lại</button>
           </div>
         </div>
 
@@ -109,7 +115,7 @@
           <div class="letter-paper">
             <div class="letter-header">
               <span class="letter-date" id="letterDateText">Ngày 20 tháng 10</span>
-              <h3 class="letter-greeting" id="letterGreetingText">Gửi Ngọc Hằng,</h3>
+              <h3 class="letter-greeting" id="letterGreetingText">Gửi cô chủ Sóp hoa,</h3>
             </div>
 
             <div class="letter-body">
@@ -118,14 +124,15 @@
             </div>
 
             <div class="letter-footer">
-              <p class="sender-label" id="senderLabelText">Người gửi trao yêu thương</p>
+              <p class="sender-label" id="senderLabelText">Người gửi</p>
               <p class="sender-name" id="senderNameText">Minh Tiền</p>
             </div>
           </div>
 
           <div class="stage-actions">
+            <button id="backToStage1Btn" class="secondary-btn">← Quay lại</button>
             <button id="toStage3Btn" class="primary-btn">
-              <span id="toStage3BtnText">Mở Album Kỷ Niệm Polaroid</span>
+              <span id="toStage3BtnText">Mở những đoá hoa</span>
               <span>📸</span>
             </button>
           </div>
@@ -136,17 +143,18 @@
     <!-- ================= CHẶNG 3: ALBUM ẢNH POLAROID ================= -->
     <section id="stage-3" class="stage">
       <div class="stage-card wide-card">
-        <h2 id="albumTitleText" class="section-title">Album Kỷ Niệm Của Chúng Mình</h2>
+        <h2 id="albumTitleText" class="section-title">Những Bông Hoa</h2>
         <div class="tip-pill" id="albumTipText">
-          ✨ Mẹo nhỏ: Chạm vào từng bức ảnh để lật xem lời nhắn bí mật phía sau nhé!
+          ✨ Mẹo nhỏ: Chạm vào từng bức ảnh để lật xem lời nhắn phía sau nha
         </div>
 
-        <!-- Lưới ảnh Polaroid -->
+        <!-- Lưới ảnh Polaroid cân đối 2x2 -->
         <div id="polaroidGrid" class="polaroid-grid"></div>
 
         <div class="stage-actions">
+          <button id="backToStage2Btn" class="secondary-btn">← Quay lại</button>
           <button id="toStage4Btn" class="primary-btn">
-            <span id="toStage4BtnText">Khám Phá Quà Tặng Bí Mật</span>
+            <span id="toStage4BtnText">Khám Phá thẻ cào đặc biệt</span>
             <span>🎁</span>
           </button>
         </div>
@@ -156,7 +164,7 @@
     <!-- ================= CHẶNG 4: THẺ CÀO BÍ MẬT ================= -->
     <section id="stage-4" class="stage">
       <div class="stage-card">
-        <h2 id="scratchSectionTitle" class="section-title">Món Quà Bí Mật Cuối Cùng</h2>
+        <h2 id="scratchSectionTitle" class="section-title">Món Quà đặc biệt</h2>
         <p id="scratchSectionSub" class="sub-text">Dùng ngón tay hoặc chuột cào lớp nhũ ánh kim bên dưới để nhận quà nhé!</p>
 
         <div class="scratch-card-container">
@@ -164,8 +172,8 @@
             <!-- Nội dung phần thưởng nằm dưới lớp cào -->
             <div class="scratch-prize-content">
               <span class="voucher-badge" id="voucherBadgeText">VOUCHER ĐẶC QUYỀN 20/10</span>
-              <h3 class="voucher-title" id="voucherTitleText">Một buổi hẹn hò & ăn tối lãng mạn</h3>
-              <p class="voucher-desc" id="voucherDescText">Chụp màn hình thẻ này và gửi cho mình để nhận quà bất cứ lúc nào nhé!</p>
+              <h3 class="voucher-title" id="voucherTitleText">Một ly trà sữa full topping</h3>
+              <p class="voucher-desc" id="voucherDescText"></p>
             </div>
             <!-- Lớp phủ cào Canvas -->
             <canvas id="scratchCanvas"></canvas>
@@ -173,6 +181,10 @@
         </div>
 
         <p id="scratchStatusText" class="scratch-status">Hãy cào lớp nhũ phía trên ✨</p>
+
+        <div class="stage-actions">
+          <button id="backToStage3Btn" class="secondary-btn">← Quay lại</button>
+        </div>
       </div>
     </section>
 
