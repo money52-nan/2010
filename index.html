@@ -1,1 +1,184 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Món Quà 20/10 Đặc Biệt</title>
 
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Canvas hiệu ứng cánh hoa hồng & pháo giấy -->
+  <canvas id="petalCanvas"></canvas>
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- Nút Bật/Tắt nhạc góc phải trên -->
+  <button id="musicBtn" class="music-btn" aria-label="Bật/Tắt nhạc">
+    <span id="musicIcon">🔇</span>
+    <span id="musicText">Bật nhạc</span>
+  </button>
+  <audio id="bgAudio" loop preload="auto"></audio>
+
+  <!-- Khung chính -->
+  <main class="app-container">
+
+    <!-- ================= CHẶNG 1: MỞ HỘP QUÀ ================= -->
+    <section id="stage-1" class="stage active">
+      <div class="stage-card">
+        <div class="recipient-badge">
+          🌸 <span id="introPrefixText">Món quà 20/10 đặc biệt dành riêng cho</span> <span id="recipientNameText">Ngọc Hằng</span>
+        </div>
+
+        <h1 id="stage1Title" class="main-title">Chúc Mừng Ngày Phụ Nữ Việt Nam 20/10</h1>
+        <p id="stage1Subtitle" class="sub-text">Chạm vào hộp quà 3 lần để tháo nơ lụa và mở điều bất ngờ bên trong nhé!</p>
+
+        <!-- Hộp quà 3D -->
+        <div class="gift-scene" id="giftScene">
+          <div class="gift-box-wrapper" id="giftBoxWrapper">
+            <div class="gift-glow"></div>
+            <div class="gift-box" id="giftBox">
+              <!-- Nắp hộp -->
+              <div class="gift-lid">
+                <div class="gift-bow">
+                  <div class="bow-left"></div>
+                  <div class="bow-right"></div>
+                  <div class="bow-center"></div>
+                </div>
+                <div class="lid-ribbon"></div>
+              </div>
+              <!-- Thân hộp -->
+              <div class="gift-body">
+                <div class="body-ribbon"></div>
+                <div class="gift-tag">20/10</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Thanh tiến độ 3 lần chạm -->
+        <div id="tapProgressWrap" class="tap-progress-wrap">
+          <div class="tap-dots">
+            <span class="tap-dot" id="dot-1"></span>
+            <span class="tap-dot" id="dot-2"></span>
+            <span class="tap-dot" id="dot-3"></span>
+          </div>
+          <p id="tapHintText" class="tap-hint">Chạm vào hộp quà để mở (0/3)</p>
+        </div>
+
+        <!-- Nội dung hiện ra sau khi mở hộp quà -->
+        <div id="giftOpenedContent" class="gift-opened-content hidden">
+          <p id="openedMessage" class="opened-message">✨ Hộp quà yêu thương đã mở! Một bức tâm thư đang chờ bạn khám phá...</p>
+          <button id="toStage2Btn" class="primary-btn">
+            <span id="toStage2BtnText">Mở Phong Bì Tâm Thư</span>
+            <span>💌</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CHẶNG 2: PHONG BÌ TÂM THƯ ================= -->
+    <section id="stage-2" class="stage">
+      <div class="stage-card">
+        <!-- Trạng thái phong bì chưa mở -->
+        <div id="envelopeClosedView" class="envelope-closed-view">
+          <h2 id="envelopeHeaderTitle" class="section-title">Một Bức Thư Dành Riêng Cho Bạn</h2>
+          <p id="envelopeHeaderSub" class="sub-text">Chạm vào con dấu sáp để mở phong bì nhé</p>
+
+          <div class="envelope-wrapper" id="envelopeTrigger">
+            <div class="envelope">
+              <div class="envelope-flap"></div>
+              <div class="envelope-pocket"></div>
+              <div class="envelope-letter-preview">
+                <p id="envelopePreviewText">Gửi người con gái đặc biệt...</p>
+              </div>
+              <div class="wax-seal">
+                <span>20/10</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trạng thái bức thư đã mở -->
+        <div id="letterOpenedView" class="letter-opened-view hidden">
+          <div class="letter-paper">
+            <div class="letter-header">
+              <span class="letter-date" id="letterDateText">Ngày 20 tháng 10</span>
+              <h3 class="letter-greeting" id="letterGreetingText">Gửi Ngọc Hằng,</h3>
+            </div>
+
+            <div class="letter-body">
+              <p id="typewriterText" class="typewriter-text"></p>
+              <span id="typewriterCursor" class="typewriter-cursor">|</span>
+            </div>
+
+            <div class="letter-footer">
+              <p class="sender-label" id="senderLabelText">Người gửi trao yêu thương</p>
+              <p class="sender-name" id="senderNameText">Minh Tiền</p>
+            </div>
+          </div>
+
+          <div class="stage-actions">
+            <button id="toStage3Btn" class="primary-btn">
+              <span id="toStage3BtnText">Mở Album Kỷ Niệm Polaroid</span>
+              <span>📸</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CHẶNG 3: ALBUM ẢNH POLAROID ================= -->
+    <section id="stage-3" class="stage">
+      <div class="stage-card wide-card">
+        <h2 id="albumTitleText" class="section-title">Album Kỷ Niệm Của Chúng Mình</h2>
+        <div class="tip-pill" id="albumTipText">
+          ✨ Mẹo nhỏ: Chạm vào từng bức ảnh để lật xem lời nhắn bí mật phía sau nhé!
+        </div>
+
+        <!-- Lưới ảnh Polaroid -->
+        <div id="polaroidGrid" class="polaroid-grid"></div>
+
+        <div class="stage-actions">
+          <button id="toStage4Btn" class="primary-btn">
+            <span id="toStage4BtnText">Khám Phá Quà Tặng Bí Mật</span>
+            <span>🎁</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CHẶNG 4: THẺ CÀO BÍ MẬT ================= -->
+    <section id="stage-4" class="stage">
+      <div class="stage-card">
+        <h2 id="scratchSectionTitle" class="section-title">Món Quà Bí Mật Cuối Cùng</h2>
+        <p id="scratchSectionSub" class="sub-text">Dùng ngón tay hoặc chuột cào lớp nhũ ánh kim bên dưới để nhận quà nhé!</p>
+
+        <div class="scratch-card-container">
+          <div class="scratch-card-box" id="scratchCardBox">
+            <!-- Nội dung phần thưởng nằm dưới lớp cào -->
+            <div class="scratch-prize-content">
+              <span class="voucher-badge" id="voucherBadgeText">VOUCHER ĐẶC QUYỀN 20/10</span>
+              <h3 class="voucher-title" id="voucherTitleText">Một buổi hẹn hò & ăn tối lãng mạn</h3>
+              <p class="voucher-desc" id="voucherDescText">Chụp màn hình thẻ này và gửi cho mình để nhận quà bất cứ lúc nào nhé!</p>
+            </div>
+            <!-- Lớp phủ cào Canvas -->
+            <canvas id="scratchCanvas"></canvas>
+          </div>
+        </div>
+
+        <p id="scratchStatusText" class="scratch-status">Hãy cào lớp nhũ phía trên ✨</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>
