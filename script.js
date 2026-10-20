@@ -65,7 +65,7 @@ const CONFIG = {
   scratchSectionSub: "Dùng ngón tay hoặc chuột cào lớp nhũ ánh kim bên dưới để nhận quà nhé!",
   scratchCoverText: "CÀO NHẸ ĐỂ NHẬN QUÀ 20/10 ✨",
   voucherBadge: "VOUCHER ĐẶC QUYỀN 20/10",
-  voucherTitle: "Một ly trà sữa full topping",
+  voucherTitle: "Một ly trà sữa đặc biệt",
   voucherDesc: ""
 };
 
