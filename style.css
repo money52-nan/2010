@@ -8,8 +8,8 @@
   --gold: #d4af37;
   --text-main: #4a152b;
   --text-muted: #7b3f58;
-  --card-bg: rgba(255, 255, 255, 0.82);
-  --card-border: rgba(255, 255, 255, 0.9);
+  --card-bg: rgba(255, 255, 255, 0.84);
+  --card-border: rgba(255, 255, 255, 0.92);
   --shadow-soft: 0 20px 50px rgba(173, 20, 87, 0.14);
 }
 
@@ -74,7 +74,7 @@ body {
   transform: translateY(-2px);
 }
 
-/* Khung chính */
+/* Khung chính căn giữa màn hình */
 .app-container {
   position: relative;
   z-index: 10;
@@ -82,14 +82,15 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 64px 16px 40px;
+  padding: 68px 16px 44px;
 }
 
 .stage {
   display: none;
   width: 100%;
-  max-width: 680px;
-  animation: fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  max-width: 660px;
+  margin: 0 auto;
+  animation: fadeUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .stage.active {
@@ -105,21 +106,22 @@ body {
   padding: 36px 28px;
   text-align: center;
   box-shadow: var(--shadow-soft);
-}
-
-.wide-card {
-  max-width: 920px;
   margin: 0 auto;
 }
 
 #stage-3.stage {
-  max-width: 920px;
+  max-width: 720px;
+}
+
+.wide-card {
+  max-width: 720px;
+  margin: 0 auto;
 }
 
 @keyframes fadeUp {
   from {
     opacity: 0;
-    transform: translateY(20px) scale(0.98);
+    transform: translateY(18px) scale(0.98);
   }
   to {
     opacity: 1;
@@ -325,7 +327,7 @@ body {
   font-weight: 700;
   padding: 3px 8px;
   border-radius: 6px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Khi hộp quà mở */
@@ -379,7 +381,16 @@ body {
   margin-bottom: 18px;
 }
 
-/* Nút bấm chính */
+/* Cụm nút điều hướng */
+.stage-actions {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
 .primary-btn {
   display: inline-flex;
   align-items: center;
@@ -391,7 +402,7 @@ body {
   background: linear-gradient(135deg, #e91e63, #ad1457);
   color: #fff;
   font-family: inherit;
-  font-size: 1rem;
+  font-size: 0.98rem;
   font-weight: 600;
   cursor: pointer;
   box-shadow: 0 10px 25px rgba(216, 27, 96, 0.32);
@@ -403,15 +414,35 @@ body {
   box-shadow: 0 14px 30px rgba(216, 27, 96, 0.42);
 }
 
-.primary-btn:active {
-  transform: translateY(0);
+.secondary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 13px 22px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(216, 27, 96, 0.32);
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--primary-dark);
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.22s ease;
+}
+
+.secondary-btn:hover {
+  background: #ffffff;
+  border-color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(216, 27, 96, 0.14);
 }
 
 /* ================= CHẶNG 2: PHONG BÌ & TÂM THƯ ================= */
 .envelope-wrapper {
   display: flex;
   justify-content: center;
-  margin: 28px 0 12px;
+  margin: 28px 0 16px;
   cursor: pointer;
 }
 
@@ -504,7 +535,7 @@ body {
   padding: 32px 26px;
   text-align: left;
   box-shadow: inset 0 0 25px rgba(244, 143, 177, 0.12), 0 12px 30px rgba(173, 20, 87, 0.08);
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .letter-header {
@@ -527,7 +558,7 @@ body {
 }
 
 .letter-body {
-  min-height: 150px;
+  min-height: 130px;
   font-size: 1.04rem;
   line-height: 1.85;
   color: #3d1224;
@@ -570,7 +601,7 @@ body {
   color: var(--primary-dark);
 }
 
-/* ================= CHẶNG 3: LƯỚI ẢNH POLAROID LẬT 3D ================= */
+/* ================= CHẶNG 3: LƯỚI ẢNH POLAROID 2x2 CÂN ĐỐI ================= */
 .tip-pill {
   display: inline-block;
   background: rgba(255, 255, 255, 0.9);
@@ -585,14 +616,18 @@ body {
 
 .polaroid-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 24px;
-  margin-bottom: 30px;
+  max-width: 540px;
+  margin: 0 auto 28px;
+  justify-items: center;
 }
 
 .polaroid-card {
   perspective: 1000px;
-  height: 320px;
+  width: 100%;
+  max-width: 255px;
+  height: 325px;
   cursor: pointer;
 }
 
@@ -625,7 +660,7 @@ body {
 
 .polaroid-photo-wrap {
   width: 100%;
-  height: 215px;
+  height: 220px;
   border-radius: 10px;
   overflow: hidden;
   background: #fce4ec;
@@ -641,7 +676,7 @@ body {
 
 .polaroid-caption {
   font-family: 'Dancing Script', cursive;
-  font-size: 1.35rem;
+  font-size: 1.4rem;
   color: var(--text-main);
   margin-top: auto;
 }
@@ -722,16 +757,20 @@ body {
 
 .voucher-title {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.65rem;
+  font-size: 1.7rem;
   font-weight: 700;
   color: var(--primary-dark);
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .voucher-desc {
   font-size: 0.88rem;
   color: var(--text-muted);
   line-height: 1.5;
+}
+
+.voucher-desc:empty {
+  display: none;
 }
 
 #scratchCanvas {
@@ -750,15 +789,11 @@ body {
   font-weight: 500;
 }
 
-.stage-actions {
-  margin-top: 10px;
-}
-
 .hidden {
   display: none !important;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 560px) {
   .stage-card {
     padding: 28px 18px;
   }
@@ -767,8 +802,6 @@ body {
   }
   .polaroid-grid {
     grid-template-columns: 1fr;
-    max-width: 280px;
-    margin-left: auto;
-    margin-right: auto;
+    max-width: 265px;
   }
 }
