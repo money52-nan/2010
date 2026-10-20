@@ -21,9 +21,7 @@ const CONFIG = {
   envelopePreviewText: "Gửi Ngọc Hằng...",
   letterDate: "Ngày 20 tháng 10",
   letterGreeting: "Gửi cô chủ Sóp hoa,",
-  letterContent: `Nhân ngày 20/10, chúc bạn những điều tốt đẹp và dịu dàng nhất. Chúc bạn luôn xinh như hoa, 
-  
-vượt mọi thử thách, sớm đạt được những mục tiêu của bản thân và gặp thật nhiều may mắn.`,
+  letterContent: `Nhân ngày 20/10, chúc bạn những điều tốt đẹp và dịu dàng nhất. Chúc bạn luôn xinh như hoa, vượt mọi thử thách, sớm đạt được những mục tiêu của bản thân và gặp thật nhiều may mắn.`,
   typewriterSpeed: 32, // Tốc độ gõ chữ (ms) - số càng nhỏ gõ càng nhanh
   senderLabel: "Người gửi",
   senderName: "Minh Tiền",
